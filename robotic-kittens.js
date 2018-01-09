@@ -1,21 +1,23 @@
-violetLog = function(msg) { console.log('%c'+msg, 'color: #C728FF;');}
+violetLog = function(msg) { console.log('%c'+msg, 'color: #C728FF;');};
 getResource = function(resourceName) {
 	return gamePage.resPool.get(resourceName);
-}
+};
 isAlmostFilled = function(resource) {
 	return resource.value / resource.maxValue > 0.95;
-}
+};
 craftAll = function(resourceName, craftName) {
-	var resource = getResource(resource);
+	var resource = getResource(resourceName);
 	if (isAlmostFilled(resource) && gamePage.workshop.getCraft(craftName).unlocked) {
 		violetLog('Crafting ' + craftName);
 		gamePage.craftAll(craftName);
 	}
-}
+};
 
 function automation_init() {
 	window.automation = {
 		automatize: {
+			catnip: true,
+
 			hunt: true,
 			parchment: true,
 			manuscript: false,
@@ -104,12 +106,25 @@ function automation_init() {
 	}
 
 	gamePage.timer.addEvent(dojo.hitch(this, function() {
+		// Auto gathering
+		if (automation.automatize.catnip) {
+    		gamePage.bld.gatherCatnip();
+		}
+	}), 1); // Once per 1 ticks (1/3 second)
+
+	gamePage.timer.addEvent(dojo.hitch(this, function() {
     	automation.observeSky();
-    	automation.sendHunters();
+	}), 3); // Once per 3 ticks (1 second)
+
+	gamePage.timer.addEvent(dojo.hitch(this, function() {
+		automation.sendHunters();
     	automation.minMaxCraft();
-    	automation.minMaxPromotion();
+	}), 6); // Once per 6 ticks (2 seconds)
+
+	gamePage.timer.addEvent(dojo.hitch(this, function() {
+		automation.minMaxPromotion();
     	automation.minMaxFaith();
-	}), 3); // Once per 3 ticks
+	}), 15); // Once per 15 ticks (5 seconds)
 
 	violetLog('Automation initiliazed.');
 }
