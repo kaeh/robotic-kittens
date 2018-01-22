@@ -1,4 +1,6 @@
-violetLog = function(msg) {console.log('%c'+msg, 'color: #C728FF;');};
+violetLog = function(msg) {
+	console.log('%cBip... ' + msg + ' Boop...', 'color: #C728FF;');
+};
 getResource = function(resourceName) {
 	return gamePage.resPool.get(resourceName);
 };
@@ -90,6 +92,12 @@ getAutomationPref = function() {
 			id: 'automatizeObserve',
 			optionLabel: 'Automatize observing the sky',
 			value: false
+		},
+
+		buildings: {
+			ids: [],
+			displayed: '',
+			hide: true
 		}
 	};
 };
@@ -168,6 +176,18 @@ function roboticKittensInit() {
 				violetLog('Observing the sky.');
 			}
 		},
+		autoBuild: function() {
+			// Only click if there is buildings to autobuild and building is available.
+			if (roboticKittens.automatize.buildings.ids.length > 0) {
+				roboticKittens.automatize.buildings.ids.forEach(function(building) {
+					var $selector = $("div.btn:not(.disabled)>div.btnContent:contains(" + building + ")");
+					if ($selector.length > 0) {
+						violetLog('Auto building ' + building);
+						$selector.click();
+					}
+				});
+			}
+		},
 
 		constructOptionsHtml: function() {
 			// Create popin
@@ -183,6 +203,10 @@ function roboticKittensInit() {
 			$(roboticKittensOptsPopin).append('<h4>Robotic Kittens</h4>');
 			// Add options
 			$.each(roboticKittens.automatize, function(index, automation) {
+				if(automation.hide) {
+					return;
+				}
+
 				// Create hidden input
 				var input = document.createElement('input');
 				input.setAttribute('id', automation.id);
@@ -201,6 +225,25 @@ function roboticKittensInit() {
 				$(roboticKittensOptsPopin).append('<label for="' + automation.id + '">' + automation.optionLabel + '</label>');
 				$(roboticKittensOptsPopin).append('<br/>');
 			});
+			// Add Auto Builder
+			$(roboticKittensOptsPopin).append('<h5>Auto Builder</h5>');
+			var autoBuilderInput = document.createElement('textarea');
+			autoBuilderInput.setAttribute('id', 'autoBuilderInput');
+			autoBuilderInput.value = roboticKittens.automatize.buildings.displayed;
+			$(autoBuilderInput).change(function onAutoBuilderChange() {
+				// Sanitize input and save building to auto-build
+				roboticKittens.automatize.buildings.ids = [];
+				roboticKittens.automatize.buildings.displayed = '';
+				this.value.split(';').forEach(function(value) {
+					if ($(".btnContent:contains(" + value.trim() + ")").length > 0 && roboticKittens.automatize.buildings.ids.indexOf(value.trim()) < 0) {
+						roboticKittens.automatize.buildings.ids.push(value.trim());
+						roboticKittens.automatize.buildings.displayed += value + ';';
+					}
+				});
+				this.value = roboticKittens.automatize.buildings.displayed;
+				saveAutomationPref();
+			});
+			$(roboticKittensOptsPopin).append(autoBuilderInput);
 		}
 	}
 
@@ -212,18 +255,19 @@ function roboticKittensInit() {
 	}, 1); // Once per 1 second
 
 	gamePage.timer.addEvent(dojo.hitch(this, function() {
-    		roboticKittens.observeSky();
+		roboticKittens.observeSky();
 	}), 3); // Once per 3 ticks (1 second)
 
 	gamePage.timer.addEvent(dojo.hitch(this, function() {
 		roboticKittens.sendHunters();
+		roboticKittens.autoBuild();
     	roboticKittens.minMaxCraft();
 	}), 6); // Once per 6 ticks (2 seconds)
 
 	gamePage.timer.addEvent(dojo.hitch(this, function() {
 		roboticKittens.minMaxPromotion();
-    		roboticKittens.minMaxFaith();
-	}), 15); // Once per 15 ticks (5 seconds)
+		roboticKittens.minMaxFaith();
+	}), 60); // Once per 60 ticks (20 seconds)
 
 	// Construct HTML options
 	roboticKittens.constructOptionsHtml();
