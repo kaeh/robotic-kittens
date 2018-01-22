@@ -4,7 +4,10 @@ Automation for kittensgame (http://bloodrizer.ru/games/kittens)
 ## How to use
 First, open console with F12.
 Go to "Console" tab.
-Copy/Paste this : javascript:(function(){document.body.appendChild(document.createElement('script')).src='http://cdn.rawgit.com/kaeh/robotic-kittens/master/robotic-kittens.js';})();
+Copy/Paste this : 
+```javascript
+javascript:(function(){document.body.appendChild(document.createElement('script')).src='http://cdn.rawgit.com/kaeh/robotic-kittens/master/robotic-kittens.js';})();
+```
 The script is now injected.
 
 ### Activate / Deactivate automation
