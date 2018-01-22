@@ -1,0 +1,4 @@
+// IDE Folder
+.vscode
+// NPM
+node_modules
