@@ -204,15 +204,15 @@ function roboticKittensInit() {
 		}
 	}
 
-	gamePage.timer.addEvent(dojo.hitch(this, function() {
+	setInterval(function() {
 		// Auto gathering
 		if (roboticKittens.automatize.catnip.value) {
-    		gamePage.bld.gatherCatnip();
+			gamePage.bld.gatherCatnip();
 		}
-	}), 1); // Once per 1 ticks (1/3 second)
+	}, 1); // Once per 1 second
 
 	gamePage.timer.addEvent(dojo.hitch(this, function() {
-    	roboticKittens.observeSky();
+    		roboticKittens.observeSky();
 	}), 3); // Once per 3 ticks (1 second)
 
 	gamePage.timer.addEvent(dojo.hitch(this, function() {
@@ -222,7 +222,7 @@ function roboticKittensInit() {
 
 	gamePage.timer.addEvent(dojo.hitch(this, function() {
 		roboticKittens.minMaxPromotion();
-    	roboticKittens.minMaxFaith();
+    		roboticKittens.minMaxFaith();
 	}), 15); // Once per 15 ticks (5 seconds)
 
 	// Construct HTML options
