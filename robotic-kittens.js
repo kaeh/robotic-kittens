@@ -105,6 +105,9 @@ var saveAutomationPref = function() {
     window.localStorage.setItem('roboticKittensAutomation', JSON.stringify(roboticKittens.automatize));
     violetLog('Robotic Kittens options saved.');
 };
+var currentTabIsBonfire = function() {
+    return gamePage.tabs[0].domNode.classList.toString().indexOf('activeTab') >= 0;
+};
 
 function roboticKittensInit() {
     window.roboticKittens = {
@@ -178,7 +181,7 @@ function roboticKittensInit() {
         },
         autoBuild: function() {
             // Only click if there is buildings to autobuild and building is available.
-            if (roboticKittens.automatize.buildings.ids.length > 0) {
+            if (currentTabIsBonfire() && roboticKittens.automatize.buildings.ids.length > 0) {
                 roboticKittens.automatize.buildings.ids.forEach(function(building) {
                     var $selector = $('div.btn:not(.disabled)>div.btnContent:contains(' + building + ')');
                     if ($selector.length > 0) {
