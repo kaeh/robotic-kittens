@@ -235,15 +235,15 @@ function roboticKittensInit() {
             autoBuilderInput.value = roboticKittens.automatize.buildings.displayed;
             $(autoBuilderInput).change(function onAutoBuilderChange() {
                 // Sanitize input and save building to auto-build
-                roboticKittens.automatize.buildings.ids = [];
-                roboticKittens.automatize.buildings.displayed = '';
-                this.value.split(';').forEach(function(value) {
-                    if ($('.btnContent:contains(' + value.trim() + ')').length > 0 && roboticKittens.automatize.buildings.ids.indexOf(value.trim()) < 0) {
-                        roboticKittens.automatize.buildings.ids.push(value.trim());
-                        roboticKittens.automatize.buildings.displayed += value + ';';
-                    }
-                });
+                var acceptedValues = gamePage.bld.buildingsData.map(value => value.label);
+                // Intersect accepted values (from bonfire datas) and inputed values
+                var sanitizedValues = [...new Set(this.value.split(';').map(x => x.trim()))].filter(x => new Set(acceptedValues).has(x));
+                // Save object
+                roboticKittens.automatize.buildings.ids = sanitizedValues;
+                roboticKittens.automatize.buildings.displayed = sanitizedValues.join('; ');
+                // Reset input value with sanitized input
                 this.value = roboticKittens.automatize.buildings.displayed;
+                // Save preferences
                 saveAutomationPref();
             });
             $(roboticKittensOptsPopin).append(autoBuilderInput);
