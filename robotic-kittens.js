@@ -60,6 +60,11 @@ var getAutomationPref = function() {
             optionLabel: 'Automatize beam craft',
             value: false
         },
+        scaffold: {
+            id: 'automatizeScaffold',
+            optionLabel: 'Automatize Scaffold craft',
+            value: false
+        },
         slab: {
             id: 'automatizeSlab',
             optionLabel: 'Automatize slab craft',
@@ -137,6 +142,8 @@ function roboticKittensInit() {
             }
             // Beam craft
             if (roboticKittens.automatize.beam.value) { craftAll('wood', 'beam'); }
+            // Scaffold craft
+            if (roboticKittens.automatize.scaffold.value) { gamePage.craftAll('scaffold'); }
             // Slab craft
             if (roboticKittens.automatize.slab.value) { craftAll('minerals', 'slab'); }
             // Steel & Plate craft
