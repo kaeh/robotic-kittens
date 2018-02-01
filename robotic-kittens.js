@@ -1,6 +1,10 @@
 var violetLog = function(msg) {
     console.log('%cBip... ' + msg + ' Boop...', 'color: #C728FF;');
 };
+String.prototype.capitalizeEachWords = function()
+{
+    return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+};
 var getResource = function(resourceName) {
     return gamePage.resPool.get(resourceName);
 };
@@ -242,9 +246,9 @@ function roboticKittensInit() {
             autoBuilderInput.value = roboticKittens.automatize.buildings.displayed;
             $(autoBuilderInput).change(function onAutoBuilderChange() {
                 // Sanitize input and save building to auto-build
-                var acceptedValues = gamePage.bld.buildingsData.map(value => value.label);
+                var acceptedValues = gamePage.bld.buildingsData.map(value => value.label ? value.label.capitalizeEachWords() : value.name.capitalizeEachWords());
                 // Intersect accepted values (from bonfire datas) and inputed values
-                var sanitizedValues = [...new Set(this.value.split(';').map(x => x.trim()))].filter(x => new Set(acceptedValues).has(x));
+                var sanitizedValues = [...new Set(this.value.split(';').map(x => x.trim().capitalizeEachWords()))].filter(x => new Set(acceptedValues).has(x));
                 // Save object
                 roboticKittens.automatize.buildings.ids = sanitizedValues;
                 roboticKittens.automatize.buildings.displayed = sanitizedValues.join('; ');
