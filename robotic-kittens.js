@@ -164,7 +164,7 @@ function roboticKittensInit() {
             if (roboticKittens.automatize.beam.value) { craftAll('wood', 'beam'); }
             // Scaffold craft
             if (roboticKittens.automatize.scaffold.value) { gamePage.craftAll('scaffold'); }
-            if (roboticKittens.automatize.tradeShip.value) { gamePage.craftAll('tradeShip'); }
+            if (roboticKittens.automatize.tradeShip.value) { gamePage.craftAll('ship'); }
             // Slab craft
             if (roboticKittens.automatize.slab.value) { craftAll('minerals', 'slab'); }
             // Steel & Plate craft
