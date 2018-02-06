@@ -69,6 +69,12 @@ var getAutomationPref = function() {
             optionLabel: 'Automatize Scaffold craft',
             value: false
         },
+        tradeShip: {
+            id: 'automatizeTradeShip',
+            optionLabel: 'Automatize Trade ship craft',
+            value: false
+        },
+
         slab: {
             id: 'automatizeSlab',
             optionLabel: 'Automatize slab craft',
@@ -158,6 +164,7 @@ function roboticKittensInit() {
             if (roboticKittens.automatize.beam.value) { craftAll('wood', 'beam'); }
             // Scaffold craft
             if (roboticKittens.automatize.scaffold.value) { gamePage.craftAll('scaffold'); }
+            if (roboticKittens.automatize.tradeShip.value) { gamePage.craftAll('tradeShip'); }
             // Slab craft
             if (roboticKittens.automatize.slab.value) { craftAll('minerals', 'slab'); }
             // Steel & Plate craft
@@ -172,7 +179,8 @@ function roboticKittensInit() {
                 gamePage.craftAll('steel');
                 gamePage.craftAll('plate');
             }
-
+            if (roboticKittens.automatize.gear.value) { gamePage.craftAll('gear'); }
+            if (roboticKittens.automatize.alloy.value) { gamePage.craftAll('alloy'); }
         },
         minMaxPromotion: function() {
             if (!roboticKittens.automatize.promotion.value) { return; }
