@@ -79,9 +79,19 @@ var getAutomationPref = function() {
             optionLabel: 'Automatize steel craft',
             value: false
         },
+        gear: {
+            id: 'automatizeGear',
+            optionLabel: 'Automatize gear craft',
+            value: false
+        },
         plate: {
             id: 'automatizePlate',
             optionLabel: 'Automatize plate craft',
+            value: false
+        },
+        alloy: {
+            id: 'automatizeAlloy',
+            optionLabel: 'Automatize alloy craft',
             value: false
         },
 
